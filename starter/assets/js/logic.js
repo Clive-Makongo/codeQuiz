@@ -3,10 +3,11 @@ console.log(questionsArr);
 
 let game = document.getElementById("game");
 let gameOptions = document.querySelector('ol')
-let options = []
+let options = [];
+let btn = document.getElementById('start')
 
 function startGame() {
-    displayQuestion()
+    displayQuestion();
 
   console.log(options);
 }
@@ -14,14 +15,16 @@ function startGame() {
 
 function displayQuestion() {
     for (let i = 0; i < questionsArr.length; i++) {
-        for (let i = 0; i < questionsArr[i].answers.length; i++) {
-          options[i] = document.createElement("li");
-          options[i].textContent = questionsArr[0].answers[i];
+        for (let j = 0; j< questionsArr[i].answers.length; j++) {
+            
+                console.log(questionsArr[i].answers[j]);
+                options[j] = document.createElement("li");
+                options[j].textContent = questionsArr[i].answers[j];
 
-          game.textContent = questionsArr[0].question;
-          gameOptions.appendChild(options[i]);
+                game.textContent = questionsArr[i].question;
+                gameOptions.appendChild(options[j]);
 
-          selectAnswer()
+                selectAnswer();
         }
 
     }
@@ -29,7 +32,16 @@ function displayQuestion() {
 }
 
 function selectAnswer() {
+    let choose = document.createElement('button')
+    choose.textContent = 'Select'
+    for (let i = 0; i < options.length; i++) {
+        options[i].appendChild(choose);
 
+    
+
+    }
+
+    btn.remove();
 }
 
 let button = document.addEventListener("click", startGame);
