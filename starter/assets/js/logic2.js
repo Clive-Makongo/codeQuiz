@@ -1,5 +1,5 @@
 //Collect Questions
-questionsArr.push(q1, q2, q3, q4);
+questionsArr.push(q1, q2, q3, q4, q5, q6, q7, q8);
 console.log(questionsArr);
 
 //Get HTML Elements
@@ -10,6 +10,9 @@ let btn = document.getElementById('start');
 let choices = document.getElementById("choices");
 let question = document.getElementById("question-title");
 let time = document.getElementById("time")
+let endScreen = document.getElementById('end-screen');
+let finalScore = document.getElementById('final-score');
+let initials = document.getElementById('submit');
 
 let timer;
 let timerCount = 60;
@@ -25,19 +28,23 @@ function startQuiz() {
     startTimer();
     displayQuestion(); 
 
-
-
+    
 }
 
 function startTimer() {
     timer = setInterval(function () {
       timerCount--;
       time.textContent = timerCount;
+      if (timerCount < 1) {
+        timerCount = 0;
+        clearInterval(timer);
+        endQuiz();
+      }
     }, 1000);
 }
 
 function displayQuestion() {
-    question.textContent = questionsArr[qCount].question;
+    question.textContent = questionsArr[qCount].questions;
     console.log(question);
     for (let i = 0; i < questionsArr[qCount].answers.length; i++) {
       choose[i] = document.createElement("button");
@@ -51,24 +58,33 @@ function displayQuestion() {
 }
 
 function nextQuestion() {
-
-    let dataState = this.getAttribute("data-state");
-    if (dataState == questionsArr[qCount].correct) {
-        score++
+    if (qCount < questionsArr.length - 1) {
+        let dataState = this.getAttribute("data-state");
+        if (dataState == questionsArr[qCount].correct) {
+          score++;
+        } else {
+          timerCount -= 10;
+        }
+        qCount++;
+        question.textContent = questionsArr[qCount].questions;
+        for (let i = 0; i < questionsArr[qCount].answers.length; i++) {
+          console.log(choose[i].textContent);
+          choose[i].textContent = questionsArr[qCount].answers[i];
+        }
+        console.log(score);
     } else {
-        timerCount -= 10;
+        endQuiz();
     }
-
-    qCount++;
-    question.textContent = questionsArr[qCount].question;
-    for (let i = 0; i < questionsArr[qCount].answers.length; i++) {
-        console.log(choose[i].textContent);
-        choose[i].textContent = questionsArr[qCount].answers[i];
-    }
-    console.log(score);
+    
 }
 
+function endQuiz() {
+    game.setAttribute("class", "hide");
+    endScreen.setAttribute("class", "start");
+
+    finalScore.textContent = score;
 
 
+}
 
-btn.addEventListener('click', startQuiz)
+btn.addEventListener('click', startQuiz);
