@@ -12,16 +12,19 @@ let question = document.getElementById("question-title");
 let time = document.getElementById("time")
 let endScreen = document.getElementById('end-screen');
 let finalScore = document.getElementById('final-score');
-let initials = document.getElementById('submit');
+let initials = document.querySelector('#initials');
+let submit = document.getElementById('submit');
 
+//Declare timer elements
 let timer;
 let timerCount = 60;
 
+//Initialise useful variables
 let choose = [];
 let qCount = 0;
 let score = 0;
 
-
+//Start the Quiz
 function startQuiz() {
     start.setAttribute("class", "hide");
     game.setAttribute("class", "start")
@@ -43,6 +46,7 @@ function startTimer() {
     }, 1000);
 }
 
+//Display Question and options
 function displayQuestion() {
     question.textContent = questionsArr[qCount].questions;
     console.log(question);
@@ -57,6 +61,7 @@ function displayQuestion() {
 
 }
 
+//Go to next question
 function nextQuestion() {
     if (qCount < questionsArr.length - 1) {
         let dataState = this.getAttribute("data-state");
@@ -78,13 +83,26 @@ function nextQuestion() {
     
 }
 
+//Store the scores
 function endQuiz() {
     game.setAttribute("class", "hide");
     endScreen.setAttribute("class", "start");
 
+    time.textContent = "Time's Up!";
     finalScore.textContent = score;
 
+    submit.addEventListener('click', saveInit)
 
+
+}
+
+function saveInit() {
+    let highScore = {
+        initials: initials.value.trim(),
+        score: score
+    };
+    localStorage.setItem("highScore", JSON.stringify(highScore));
+    initials.textContent = '';
 }
 
 btn.addEventListener('click', startQuiz);
