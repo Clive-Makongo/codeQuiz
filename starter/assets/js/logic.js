@@ -1,10 +1,11 @@
 //Collect Questions
-questionsArr.push(q1, q2);
+questionsArr.push(q1, q2, q3, q4);
 console.log(questionsArr);
 
 //Get HTML Elements
-let game = document.getElementById("game");
+let game = document.getElementById("questions");
 let gameOptions = document.querySelector('ol')
+let start = document.getElementById('start-screen');
 
 //Score Elements
 let score = 0;
@@ -18,27 +19,23 @@ let options = [];
 let btn = document.getElementById('start')
 
 function startGame() {
-    let nextQuestion;
+    start.setAttribute('class', 'hide')
     let selected = [];
-    let i = 0;
 
-    do {
-        displayQuestion(i);
+    displayQuestion(qCount);
 
-        for (let i = 0; i < 4; i++) {
-            selected[i] = document.getElementById("datastate" + i);
+    for (let i = 0; i < 4; i++) {
+        selected[i] = document.getElementById("datastate" + i);
 
-            selected[i].addEventListener('click', checkAnswer);
-            // chosenAnswer = selected[i];
+        selected[i].addEventListener('click', checkAnswer);
+        // chosenAnswer = selected[i];
 
-            
-        }
-    } while (i < questionsArr.length && (nextQuestion != undefined));
+
+    }
 }
 
 
 function displayQuestion(i) {
-
     for (let j = 0; j < questionsArr[i].answers.length; j++) {
 
         console.log(questionsArr[i].answers[j]);
@@ -69,13 +66,14 @@ function addButtons() {
 }
 
 function checkAnswer() {
-  let dataState = this.getAttribute("data-state");
-  if(dataState == questionsArr[qCount].correct) {
-    score++;
-    console.log(score);
-  } else {
-    //Decrease Time
-  }
-  qCount++;
+    let dataState = this.getAttribute("data-state");
+    if (dataState == questionsArr[qCount].correct) {
+        score++;
+        console.log(score);
+    } else {
+        //Decrease Time
+    }
+    qCount++;
+    displayQuestion(qCount);
 }
 btn.addEventListener("click", startGame);
